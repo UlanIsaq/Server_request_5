@@ -9,6 +9,9 @@ function App() {
 
 	const [isCreating, setIsCreating] = useState(false);
 	const [isUpdating, setIsUpdating] = useState(false);
+
+	const [isDeleting, setIsDeleting] = useState(false);
+
 	const refreshProducts = () => setRefreshProductsFlag(!refreshProductsFlag);
 
 	useEffect(() => {
@@ -43,7 +46,7 @@ function App() {
 
 	const updateSmartphone = () => {
 		setIsUpdating(true);
-		fetch('http://locahost:3005/products/002', {
+		fetch('http://localhost:3005/products/002', {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json;charset=utf-8',
@@ -53,15 +56,38 @@ function App() {
 				price: 9999,
 			}),
 		})
-			.then((response) => {
-				if (!response.ok) {
+			.then((rawResponse) => {
+				if (!rawResponse.ok) {
 					throw new Error('Error in response');
 				}
-				console.log('smartphone is updated:', response.json());
+				return rawResponse.json();
+			})
+			.then((response) => {
+				console.log('smartphone is updated:', response);
 			})
 			.finally(() => {
-				setIsUpdating(false);
 				refreshProducts();
+				setIsUpdating(false);
+			});
+	};
+
+	const requestdeleteVacumCleaner = (id) => {
+		setIsDeleting(true);
+		fetch('http://localhost:3005/products/003', {
+			method: 'DELETE',
+		})
+			.then((rawResponse) => {
+				if (!rawResponse.ok) {
+					throw new Error('Error in response');
+				}
+				return rawResponse.json();
+			})
+			.then((response) => {
+				console.log('smartphone is deleted:', response);
+			})
+			.finally(() => {
+				refreshProducts();
+				setIsDeleting(false);
 			});
 	};
 	return (
@@ -81,6 +107,9 @@ function App() {
 			</button>
 			<button disabled={isUpdating} onClick={updateSmartphone}>
 				Update Smartphone
+			</button>
+			<button disabled={isDeleting} onClick={requestdeleteVacumCleaner}>
+				Delete Vacum Cleaner
 			</button>
 		</div>
 	);

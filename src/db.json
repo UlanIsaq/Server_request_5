@@ -6,14 +6,9 @@
       "price": 1011
     },
     {
-      "id": "002",
       "name": "Smartphone",
-      "price": 101
-    },
-    {
-      "id": "003",
-      "name": "product",
-      "price": 102
+      "price": 9999,
+      "id": "002"
     },
     {
       "name": "Vacum Cleaner",
